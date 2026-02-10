@@ -2,8 +2,6 @@ package apis
 
 import (
 	"encoding/json"
-
-	"net/url"
 )
 
 // 自动生成的文件, 生成方式: make api doc=微信文档地址url
@@ -77,18 +75,14 @@ type ReqSendWelcomeMsgExternalcontact struct {
 	WelcomeCode string `json:"welcome_code"`
 }
 
-var _ urlValuer = ReqSendWelcomeMsgExternalcontact{}
+var _ bodyer = ReqSendWelcomeMsgExternalcontact{}
 
-func (x ReqSendWelcomeMsgExternalcontact) intoURLValues() url.Values {
-	var vals map[string]interface{}
-	jsonBytes, _ := json.Marshal(x)
-	_ = json.Unmarshal(jsonBytes, &vals)
-
-	var ret url.Values = make(map[string][]string)
-	for k, v := range vals {
-		ret.Add(k, StrVal(v))
+func (x ReqSendWelcomeMsgExternalcontact) intoBody() ([]byte, error) {
+	result, err := json.Marshal(x)
+	if err != nil {
+		return nil, err
 	}
-	return ret
+	return result, nil
 }
 
 // RespSendWelcomeMsgExternalcontact 发送新客户欢迎语响应
@@ -111,7 +105,7 @@ func (x RespSendWelcomeMsgExternalcontact) intoBody() ([]byte, error) {
 // 文档：https://developer.work.weixin.qq.com/document/path/92599#发送新客户欢迎语
 func (c *ApiClient) ExecSendWelcomeMsgExternalcontact(req ReqSendWelcomeMsgExternalcontact) (RespSendWelcomeMsgExternalcontact, error) {
 	var resp RespSendWelcomeMsgExternalcontact
-	err := c.executeWXApiGet("/cgi-bin/externalcontact/send_welcome_msg", req, &resp, true)
+	err := c.executeWXApiPost("/cgi-bin/externalcontact/send_welcome_msg", req, &resp, true)
 	if err != nil {
 		return RespSendWelcomeMsgExternalcontact{}, err
 	}
