@@ -2,8 +2,6 @@ package apis
 
 import (
 	"encoding/json"
-
-	"net/url"
 )
 
 // 自动生成的文件, 生成方式: make api doc=微信文档地址url
@@ -18,19 +16,14 @@ type ReqGetCorpTagListExternalcontact struct {
 	TagID []string `json:"tag_id,omitempty"`
 }
 
-var _ urlValuer = ReqGetCorpTagListExternalcontact{}
+var _ bodyer = ReqGetCorpTagListExternalcontact{}
 
-func (x ReqGetCorpTagListExternalcontact) intoURLValues() url.Values {
-	var vals map[string]interface{}
-	jsonBytes, _ := json.Marshal(x)
-	_ = json.Unmarshal(jsonBytes, &vals)
-
-	var ret url.Values = make(map[string][]string)
-	for k, v := range vals {
-		ret.Add(k, StrVal(v))
+func (x ReqGetCorpTagListExternalcontact) intoBody() ([]byte, error) {
+	result, err := json.Marshal(x)
+	if err != nil {
+		return nil, err
 	}
-
-	return ret
+	return result, nil
 }
 
 // RespGetCorpTagListExternalcontact 获取企业标签库响应
@@ -83,7 +76,7 @@ func (x RespGetCorpTagListExternalcontact) intoBody() ([]byte, error) {
 // 文档：https://developer.work.weixin.qq.com/document/path/92696#获取企业标签库
 func (c *ApiClient) ExecGetCorpTagListExternalcontact(req ReqGetCorpTagListExternalcontact) (RespGetCorpTagListExternalcontact, error) {
 	var resp RespGetCorpTagListExternalcontact
-	err := c.executeWXApiGet("/cgi-bin/externalcontact/get_corp_tag_list", req, &resp, true)
+	err := c.executeWXApiPost("/cgi-bin/externalcontact/get_corp_tag_list", req, &resp, true)
 	if err != nil {
 		return RespGetCorpTagListExternalcontact{}, err
 	}
@@ -104,27 +97,24 @@ type ReqAddCorpTagExternalcontact struct {
 	// GroupName 标签组名称，最长为30个<strong>字符</strong>
 	GroupName string `json:"group_name,omitempty"`
 	// Order 标签组次序值。order值大的排序靠前。有效的值范围是[0, 2^32)
-	Order int `json:"order,omitempty"`
-	Tag   []struct {
-		// Name 添加的标签名称，最长为30个<strong>字符</strong>，必填
-		Name  string `json:"name"`
-		Order int    `json:"order,omitempty"`
-	} `json:"tag"`
+	Order int                               `json:"order,omitempty"`
+	Tag   []ReqAddCorpTagExternalcontactTag `json:"tag"`
 }
 
-var _ urlValuer = ReqAddCorpTagExternalcontact{}
+type ReqAddCorpTagExternalcontactTag struct {
+	// Name 添加的标签名称，最长为30个<strong>字符</strong>，必填
+	Name  string `json:"name"`
+	Order int    `json:"order,omitempty"`
+}
 
-func (x ReqAddCorpTagExternalcontact) intoURLValues() url.Values {
-	var vals map[string]interface{}
-	jsonBytes, _ := json.Marshal(x)
-	_ = json.Unmarshal(jsonBytes, &vals)
+var _ bodyer = ReqAddCorpTagExternalcontact{}
 
-	var ret url.Values = make(map[string][]string)
-	for k, v := range vals {
-		ret.Add(k, StrVal(v))
+func (x ReqAddCorpTagExternalcontact) intoBody() ([]byte, error) {
+	result, err := json.Marshal(x)
+	if err != nil {
+		return nil, err
 	}
-
-	return ret
+	return result, nil
 }
 
 // RespAddCorpTagExternalcontact 添加企业客户标签响应
@@ -172,7 +162,7 @@ func (x RespAddCorpTagExternalcontact) intoBody() ([]byte, error) {
 // 文档：https://developer.work.weixin.qq.com/document/path/92696#添加企业客户标签
 func (c *ApiClient) ExecAddCorpTagExternalcontact(req ReqAddCorpTagExternalcontact) (RespAddCorpTagExternalcontact, error) {
 	var resp RespAddCorpTagExternalcontact
-	err := c.executeWXApiGet("/cgi-bin/externalcontact/add_corp_tag", req, &resp, true)
+	err := c.executeWXApiPost("/cgi-bin/externalcontact/add_corp_tag", req, &resp, true)
 	if err != nil {
 		return RespAddCorpTagExternalcontact{}, err
 	}
@@ -196,19 +186,14 @@ type ReqEditCorpTagExternalcontact struct {
 	Order int `json:"order,omitempty"`
 }
 
-var _ urlValuer = ReqEditCorpTagExternalcontact{}
+var _ bodyer = ReqEditCorpTagExternalcontact{}
 
-func (x ReqEditCorpTagExternalcontact) intoURLValues() url.Values {
-	var vals map[string]interface{}
-	jsonBytes, _ := json.Marshal(x)
-	_ = json.Unmarshal(jsonBytes, &vals)
-
-	var ret url.Values = make(map[string][]string)
-	for k, v := range vals {
-		ret.Add(k, StrVal(v))
+func (x ReqEditCorpTagExternalcontact) intoBody() ([]byte, error) {
+	result, err := json.Marshal(x)
+	if err != nil {
+		return nil, err
 	}
-
-	return ret
+	return result, nil
 }
 
 // RespEditCorpTagExternalcontact 编辑企业客户标签响应
@@ -232,7 +217,7 @@ func (x RespEditCorpTagExternalcontact) intoBody() ([]byte, error) {
 // 文档：https://developer.work.weixin.qq.com/document/path/92696#编辑企业客户标签
 func (c *ApiClient) ExecEditCorpTagExternalcontact(req ReqEditCorpTagExternalcontact) (RespEditCorpTagExternalcontact, error) {
 	var resp RespEditCorpTagExternalcontact
-	err := c.executeWXApiGet("/cgi-bin/externalcontact/edit_corp_tag", req, &resp, true)
+	err := c.executeWXApiPost("/cgi-bin/externalcontact/edit_corp_tag", req, &resp, true)
 	if err != nil {
 		return RespEditCorpTagExternalcontact{}, err
 	}
@@ -254,18 +239,14 @@ type ReqDelCorpTagExternalcontact struct {
 	TagID []string `json:"tag_id,omitempty"`
 }
 
-var _ urlValuer = ReqDelCorpTagExternalcontact{}
+var _ bodyer = ReqDelCorpTagExternalcontact{}
 
-func (x ReqDelCorpTagExternalcontact) intoURLValues() url.Values {
-	var vals map[string]interface{}
-	jsonBytes, _ := json.Marshal(x)
-	_ = json.Unmarshal(jsonBytes, &vals)
-
-	var ret url.Values = make(map[string][]string)
-	for k, v := range vals {
-		ret.Add(k, StrVal(v))
+func (x ReqDelCorpTagExternalcontact) intoBody() ([]byte, error) {
+	result, err := json.Marshal(x)
+	if err != nil {
+		return nil, err
 	}
-	return ret
+	return result, nil
 }
 
 // RespDelCorpTagExternalcontact 删除企业客户标签响应
@@ -289,7 +270,7 @@ func (x RespDelCorpTagExternalcontact) intoBody() ([]byte, error) {
 // 文档：https://developer.work.weixin.qq.com/document/path/92696#删除企业客户标签
 func (c *ApiClient) ExecDelCorpTagExternalcontact(req ReqDelCorpTagExternalcontact) (RespDelCorpTagExternalcontact, error) {
 	var resp RespDelCorpTagExternalcontact
-	err := c.executeWXApiGet("/cgi-bin/externalcontact/del_corp_tag", req, &resp, true)
+	err := c.executeWXApiPost("/cgi-bin/externalcontact/del_corp_tag", req, &resp, true)
 	if err != nil {
 		return RespDelCorpTagExternalcontact{}, err
 	}
