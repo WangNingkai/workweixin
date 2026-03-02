@@ -254,27 +254,27 @@ func (c *ApiClient) ExecListContactWayExternalcontact(req ReqListContactWayExter
 // 文档：https://developer.work.weixin.qq.com/document/path/92577#更新企业已配置的「联系我」方式
 
 type ReqUpdateContactWayExternalcontact struct {
-	// ChatExpiresIn 临时会话有效期，以秒为单位，该参数仅在临时会话模式下有效
-	ChatExpiresIn int                      `json:"chat_expires_in"`
-	Conclusions   AddContactWayConclusions `json:"conclusions"` // 结束语，会话结束时自动发送给客户，可参考“<a href="#15645/结束语定义">结束语定义</a>”，仅临时会话模式（is_temp为true）可设置
 	// ConfigID 企业联系方式的配置id，必填
 	ConfigID string `json:"config_id"`
+	// ChatExpiresIn 临时会话有效期，以秒为单位，该参数仅在临时会话模式下有效
+	ChatExpiresIn *int                      `json:"chat_expires_in,omitempty"`
+	Conclusions   *AddContactWayConclusions `json:"conclusions,omitempty"` // 结束语，会话结束时自动发送给客户，可参考“<a href="#15645/结束语定义">结束语定义</a>”，仅临时会话模式（is_temp为true）可设置
 	// ExpiresIn 临时会话二维码有效期，以秒为单位，该参数仅在临时会话模式下有效
-	ExpiresIn int `json:"expires_in"`
+	ExpiresIn *int `json:"expires_in,omitempty"`
 	// Party 使用该联系方式的部门列表，将覆盖原有部门列表，只在配置的type为2时有效
-	Party []int `json:"party"`
+	Party []int `json:"party,omitempty"`
 	// Remark 联系方式的备注信息，不超过30个字符，将覆盖之前的备注
-	Remark string `json:"remark"`
+	Remark *string `json:"remark,omitempty"`
 	// SkipVerify 外部客户添加时是否无需验证
-	SkipVerify bool `json:"skip_verify"`
+	SkipVerify *bool `json:"skip_verify,omitempty"`
 	// State 企业自定义的state参数，用于区分不同的添加渠道，在调用“<a href="#13878">获取外部联系人详情</a>”时会返回该参数值
-	State string `json:"state"`
+	State *string `json:"state,omitempty"`
 	// Style 样式，只针对“在小程序中联系”的配置生效
-	Style int `json:"style"`
+	Style *int `json:"style,omitempty"`
 	// Unionid 可进行临时会话的客户unionid，该参数仅在临时会话模式有效，如不指定则不进行限制
-	Unionid string `json:"unionid"`
+	Unionid *string `json:"unionid,omitempty"`
 	// User 使用该联系方式的用户列表，将覆盖原有用户列表
-	User []string `json:"user"`
+	User []string `json:"user,omitempty"`
 }
 
 var _ bodyer = ReqUpdateContactWayExternalcontact{}
